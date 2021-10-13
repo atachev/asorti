@@ -12,10 +12,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-
-
-import { useAppSelector, useAppDispatch } from '../utils/hooks';
+import { Actions as LoginActions } from './actions';
+import { LoginSelectors } from './selectors';
+import { connect } from 'react-redux';
+import { useEffect } from 'react';
 
 function Copyright(props: any) {
     return (
@@ -32,7 +32,25 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-const Login = () =>{
+interface ComponentProps {
+    inited: boolean;
+}
+
+interface DispatchProps {
+    init: () => void;
+}
+
+type Props = ComponentProps & DispatchProps;
+
+const Login: React.FC<Props> = ({
+    inited,
+    init
+}) => {
+    useEffect(() => {
+        init();
+    }, [])
+    const isInited = inited;
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -42,8 +60,7 @@ const Login = () =>{
             password: data.get('password'),
         });
     };
-    
-    const dispatch = useAppDispatch()
+
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
@@ -60,8 +77,17 @@ const Login = () =>{
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        <>{`Sign in ${isInited}`}</>
                     </Typography>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                        onClick={() => init()}
+                    >
+                        [TEST] Change State
+                    </Button>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
@@ -115,4 +141,11 @@ const Login = () =>{
     );
 }
 
-export default Login;
+const mapStateToProps = (state: any) => ({
+    inited: LoginSelectors.getInit(state),
+});
+
+const mapDispatchProps = (dispatch: any) => ({
+    init: () => dispatch(LoginActions.init())
+})
+export default connect(mapStateToProps, mapDispatchProps)(Login);

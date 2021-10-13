@@ -1,21 +1,18 @@
-import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-} from 'react-router-dom';
+import * as React from 'react';
+import { ConnectedRouter } from 'connected-react-router';
+import { History } from 'history';
+import Layout from './views/Layout';
 
-// views
-import Login from './views/Login';
+interface Props {
+  history: History;
+}
 
-function App() {
+const App = (props: Props) => {
+  const { history } = props;
   return (
-    <Router>
-      <Route path="/" children={<Login />} />
-      {/* <Route path="/create-account" element={<CreateAccount />} />
-      <Route path="/login" element={<Login />} />
-      <PrivateRoute path="/dashboard" element={<Dashboard />} />
-      <Route path="*" element={<NotFound />} /> */}
-    </Router>
+    <ConnectedRouter history={history}>
+      <Layout />
+    </ConnectedRouter>
   );
 }
 
