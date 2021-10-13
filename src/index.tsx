@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -8,13 +8,13 @@ import { ThemeProvider } from "styled-components";
 import theme from './utils/theme';
 
 // redux
-import store from './store';
+import store, { history } from './store';
 import { Provider } from 'react-redux';
 
-ReactDOM.render(
+render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
-      <App />
+      <App history={history} />
     </ThemeProvider>
   </Provider>,
   document.getElementById('root')
