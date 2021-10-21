@@ -8,13 +8,13 @@ import { ThemeProvider } from "styled-components";
 import theme from './utils/theme';
 
 // redux
-import store, { history } from './store';
+import store from './store';
 import { Provider } from 'react-redux';
 
 render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
-      <App history={history} />
+      <App />
     </ThemeProvider>
   </Provider>,
   document.getElementById('root')

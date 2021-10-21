@@ -1,20 +1,12 @@
-import { createBrowserHistory } from 'history';
-
-import { routerMiddleware } from 'connected-react-router';
 import { createStore, compose, applyMiddleware } from 'redux';
 import { createRootReducer } from './store/reducers/root-reducer';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 
-export const history = createBrowserHistory();
 function configProdStore(initialState?: any): any {
-    const middlewares = [
-        routerMiddleware(history)
-    ];
 
     return createStore(
-        createRootReducer(history),
+        createRootReducer(),
         initialState,
-        compose(applyMiddleware(...middlewares))
     )
 }
 
@@ -22,11 +14,10 @@ function configDevStore(preloadedState?: any): any {
     const composeEnhancer: typeof compose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
     const middlewares: any[] = [
         reduxImmutableStateInvariant(),
-        routerMiddleware(history),
     ];
 
     const store = createStore(
-        createRootReducer(history),
+        createRootReducer(),
         preloadedState,
         composeEnhancer(
             applyMiddleware(...middlewares)
